@@ -13,4 +13,9 @@
 ![image](https://user-images.githubusercontent.com/24526217/159717479-1c33efd7-d220-490f-8d09-b852fb56616b.png)
 
 Contributors:
-@Planck1858
+[Planck1858](https://github.com/Planck1858)
+[ChechenItza](https://github.com/ChechenItza)
+[IlyushaZ](https://github.com/IlyushaZ)
+[meshokho](https://github.com/meshokho)
+[santos124](https://github.com/santos124)
+[telefon2232](https://github.com/telefon2232)
