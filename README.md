@@ -14,7 +14,6 @@
 
 Contributors:   
 [Planck1858](https://github.com/Planck1858)   
-[ChechenItza](https://github.com/ChechenItza)   
 [IlyushaZ](https://github.com/IlyushaZ)   
 [meshokho](https://github.com/meshokho)   
 [santos124](https://github.com/santos124)   
