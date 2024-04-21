@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package grpc_server;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "github.com/Planck1858/golang101/examples/grpc-server/proto/api";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info : {title : "GRPC-Service";
+    version : "1.0";
+    description : "GRPC Service"
+  };
+  external_docs : {
+    description:
+        "Description"
+  }
+  schemes : HTTPS;
+  consumes : "application/json";
+  produces : "application/json";
+};
+
+service GrpcService {
+  rpc CreateTodo(CreateTodoRequest) returns (Todo) {
+    option (google.api.http) = {
+      post : "/api/v1/todo"
+      body : "*"
+    };
+  }
+  rpc CreateTodoV2(CreateTodoRequestV2) returns (Todo) {
+    option (google.api.http) = {
+      post : "/api/v2/todo"
+      body : "todo" // !!!
+    };
+  }
+  rpc GetAllTodo(google.protobuf.Empty) returns (TodoList) {
+    option (google.api.http) = {
+      get : "/api/v1/todo"
+    };
+  }
+  rpc GetTodoByID(GetTodoByIDRequest) returns (Todo) {
+    option (google.api.http) = {
+      get : "/api/v1/todo/{id}"
+    };
+  }
+  rpc GetTodoByIDWithQueryParams(GetTodoByIDRequestWithQueryParams) returns (TodoList) {
+    option (google.api.http) = {
+      get : "/api/v2/todo"
+    };
+  }
+}
+
+enum TodoType {
+  task = 0;
+  event = 1;
+}
+
+// google.api.HttpBody
+
+// CreateTodo
+message CreateTodoRequest {
+  string Name = 1 [
+    json_name = "name",
+    (validate.rules).string = {min_len : 1, max_len : 30},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description : "name"
+    }
+  ];
+  TodoType Type = 2 [
+    json_name = "type",
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description : "type"
+    }
+  ];
+
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {required: ["name", "type"]}
+  };
+}
+
+
+// CreateTodoV2
+message CreateTodoRequestV2 {
+  CreateTodoRequest todo = 1 [json_name = "todo"];
+}
+
+// GetAllTodo
+message TodoList {repeated Todo todos = 1 [json_name = "todos"];}
+
+// GetTodoById
+message GetTodoByIDRequest {string id = 1;}
+
+
+// GetTodoByIDRequestWithQueryParams
+message GetTodoByIDRequestWithQueryParams {
+  string id = 1;
+  string type = 2;
+}
+
+// Todo
+message Todo {
+  string ID = 1 [
+    json_name = "id",
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description : "id"
+    }
+  ];
+  string Name = 2 [
+    json_name = "name",
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description : "name"
+    }
+  ];
+  TodoType Type = 3 [
+    json_name = "type",
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description : "type"
+    }
+  ];
+  google.protobuf.Timestamp createdAt = 4 [
+    json_name = "createdAt",
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description : "creation time"
+    }
+  ];
+}
